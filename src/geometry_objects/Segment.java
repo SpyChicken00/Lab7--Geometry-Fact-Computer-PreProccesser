@@ -71,6 +71,7 @@ public class Segment extends GeometricObject
 	public boolean HasSubSegment(Segment candidate)
 	{
         // TODO
+		return false;
 	}
 
 	/**
@@ -151,6 +152,7 @@ public class Segment extends GeometricObject
 	public boolean coincideWithoutOverlap(Segment that)
 	{
         // TODO
+		return false;
 	}
 	
 	/**
@@ -162,6 +164,7 @@ public class Segment extends GeometricObject
 		SortedSet<Point> pointsOn = new TreeSet<Point>();
 
         // TODO
+		pointsOn
 
 		return pointsOn;
 	}
