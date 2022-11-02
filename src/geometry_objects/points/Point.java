@@ -110,4 +110,11 @@ public class Point implements Comparable<Point>
 		if (MathUtilities.doubleEquals(this._x, pt.getX()) && MathUtilities.doubleEquals(this._y, pt.getY())) return true;
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		String s = _name;
+		s = s +  " (" + _x + ", " + _y + ")";
+		return s;
+	}
 }

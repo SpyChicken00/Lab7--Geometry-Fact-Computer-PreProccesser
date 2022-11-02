@@ -67,10 +67,10 @@ public class Segment extends GeometricObject
 	 * @param candidate
 	 * @return true if this segment contains a subsegment.
 	 */
-
 	public boolean HasSubSegment(Segment candidate)
 	{
         // TODO
+		
 		return false;
 	}
 
@@ -151,7 +151,15 @@ public class Segment extends GeometricObject
 	 */
 	public boolean coincideWithoutOverlap(Segment that)
 	{
-        // TODO
+        // TODO	
+		//check if segment slopes are different
+		if (!(MathUtilities.doubleEquals(_slope, that.slope()))) return false;
+		//check if given segment's points are identical to this segments (AKA Overlap)
+		//if (this._point1.equals(that._point1))
+		
+	
+		
+		//what does coincide but no overlap? subsegment?
 		return false;
 	}
 	
@@ -163,8 +171,10 @@ public class Segment extends GeometricObject
 	{
 		SortedSet<Point> pointsOn = new TreeSet<Point>();
 
-        // TODO
-		pointsOn
+        //find points from given set that lie on segment 
+		for (Point point:points) {
+			if (pointLiesOnSegment(point)) pointsOn.add(point);
+		}
 
 		return pointsOn;
 	}
