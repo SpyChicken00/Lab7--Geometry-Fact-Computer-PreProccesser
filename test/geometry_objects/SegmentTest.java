@@ -12,6 +12,55 @@ import geometry_objects.points.Point;
 
 class SegmentTest {
 
+	
+	@Test
+	void hasSubSegmentTest() {
+		//check with integers
+		Point A = new Point("A", 1, 3);
+		Point B = new Point("B", 2, 3);
+		Point C = new Point("C", 2, 4);
+		Point D = new Point("D", 5, 2);
+		Point E = new Point("E", 5, 3);
+		Point F = new Point("F", 3, 3);
+		Point Zero = new Point("zero", 0, 0);
+		Point One = new Point("one", 1, 1);
+		Point Half = new Point("half", 1.5, 1.5);
+		Point Two = new Point("two", 2, 2);
+		Segment testSegment1 = new Segment(A, E);
+		Segment identicalSegment1 = new Segment(A, E);
+		Segment flatSubSegment1 = new Segment(A, B);
+		Segment flatSubSegment2 = new Segment(B, E);
+		Segment invalidSubSegment1 = new Segment(A, C);
+		Segment diagonalSegment = new Segment(Zero, Two);
+		Segment diagonalSubSegment1 = new Segment(One, Two);
+		Segment diagonalSubSegment2 = new Segment(One, Half);
+		
+		
+		
+		
+		
+		//check segments that overlap one way but not the other
+		//check segments that arent subsegments
+		
+		
+		//check identical segments
+		assertFalse(testSegment1.hasSubSegment(identicalSegment1));
+		//check segments with different slopes 
+		
+	
+		//check segments with 1 identical endpoint
+		assertTrue(testSegment1.hasSubSegment(flatSubSegment1));
+		assertTrue(testSegment1.hasSubSegment(flatSubSegment2));
+		//check points that arent collinear
+		assertFalse(testSegment1.hasSubSegment(invalidSubSegment1));
+		
+		//check valid subsegment
+		//TODO failing same slope check
+		assertTrue(diagonalSegment.hasSubSegment(diagonalSubSegment1));
+	}
+	
+	
+	
 	@Test
 	void collectOrderedPointsOnSegmentTest() {
 		//check with integers

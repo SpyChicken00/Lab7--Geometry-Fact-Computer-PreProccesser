@@ -67,11 +67,21 @@ public class Segment extends GeometricObject
 	 * @param candidate
 	 * @return true if this segment contains a subsegment.
 	 */
-	public boolean HasSubSegment(Segment candidate)
+	public boolean hasSubSegment(Segment candidate)
 	{
-        // TODO
+		//TODO test
+		//check if same segment assuming that identical segments are not subsegments of each other
+		if (candidate.getPoint1().equals(_point1) && candidate.getPoint2().equals(_point2)) return false;
+		//check if same slopes
+		if (!(MathUtilities.doubleEquals(candidate.slope(), _slope))) return false;
+		//TODO need to check y-intercept? probably not
 		
-		return false;
+		//check if points lie between endpoints with between for both candidate endPoints
+		if (!(GeometryUtilities.between(candidate.getPoint1(), _point1, _point2))) return false;
+		if (!(GeometryUtilities.between(candidate.getPoint2(), _point1, _point2))) return false;
+		
+		//candidate points both lie between this segments points and same slope 
+		return true;
 	}
 
 	/**
