@@ -18,7 +18,7 @@ public class ImplicitPointPreprocessor
 	 * Algorithm:
 	 *    TODO
 	 *    
-	 *    //check all segments and see if they intersect with eachother
+	 *    //check all segments and see if they intersect with each other
 	 *
 	 *    //if they do check that the points where they overlap exist, 
 	 *    if not add them to the list of implicit points
@@ -43,8 +43,5 @@ public class ImplicitPointPreprocessor
 		}
 		return implicitPoints;
 	}
-	
-	
-	
 }
 
