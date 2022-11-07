@@ -69,18 +69,10 @@ public class Segment extends GeometricObject
 	 */
 	public boolean hasSubSegment(Segment candidate)
 	{
-		//TODO test
-		//check if same segment assuming that identical segments are not subsegments of each other
-		if (candidate.getPoint1().equals(_point1) && candidate.getPoint2().equals(_point2)) return false;
-		//check if same slopes
-		if (!(MathUtilities.doubleEquals(candidate.slope(), _slope))) return false;
-		//TODO need to check y-intercept? probably not
-		
-		//check if points lie between endpoints with between for both candidate endPoints
+		//check if candidate endpoints lie between this segments endpoints
 		if (!(GeometryUtilities.between(candidate.getPoint1(), _point1, _point2))) return false;
 		if (!(GeometryUtilities.between(candidate.getPoint2(), _point1, _point2))) return false;
 		
-		//candidate points both lie between this segments points and same slope 
 		return true;
 	}
 
@@ -152,6 +144,8 @@ public class Segment extends GeometricObject
 		return _point1.hashCode() +_point2.hashCode();
 	}
 
+	
+	
 	/*
 	 * @param that -- a segment
 	 * @return true if the segments coincide, but do not overlap:
@@ -161,16 +155,35 @@ public class Segment extends GeometricObject
 	 */
 	public boolean coincideWithoutOverlap(Segment that)
 	{
-        // TODO	
-		//check if segment slopes are different
-		if (!(MathUtilities.doubleEquals(_slope, that.slope()))) return false;
-		//check if given segment's points are identical to this segments (AKA Overlap)
-		//if (this._point1.equals(that._point1))
+        // TODO	test
+		//check all points collinear
+		//TODO issue with lines being collinear?
 		
+		//if (!(isCollinearWith(that))) return false;
+		if (!(collinearWithGap(that))) return false;
 	
+		//check if identical
+		if (this.equals(that)) return false;
 		
-		//what does coincide but no overlap? subsegment?
-		return false;
+		//check if either of that segments endpoints lie between this segments endpoints or endpoints are equal
+		//if that endpoint lies between this segments endpoints AND is not an endpoint return false;
+		
+		if (GeometryUtilities.between(that.getPoint1(), _point1, _point2) && 
+				(!(that.getPoint1().equals(_point1) || that.getPoint1().equals(_point2)))) return false;
+		if (GeometryUtilities.between(that.getPoint2(), _point1, _point2) &&
+				(!(that.getPoint2().equals(_point1) || that.getPoint2().equals(_point2)))) return false;
+		
+		return true;
+	}
+	
+	//TODO necessary? 
+	private boolean collinearWithGap(Segment that) {
+		return MathUtilities.doubleEquals(GeometryUtilities.distance(_point1, that.getPoint2()),
+				GeometryUtilities.distance(_point1, _point2) + 
+				GeometryUtilities.distance(that.getPoint1(), that.getPoint2()) +
+				GeometryUtilities.distance(_point2, that.getPoint1()));
+		
+		//check for 
 	}
 	
 	/**

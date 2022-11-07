@@ -12,7 +12,7 @@ import geometry_objects.points.Point;
 
 class SegmentTest {
 
-	
+	//this segment test class is a mess but dont worry about it
 	@Test
 	void hasSubSegmentTest() {
 		//check with integers
@@ -21,7 +21,8 @@ class SegmentTest {
 		Point C = new Point("C", 2, 4);
 		Point D = new Point("D", 5, 2);
 		Point E = new Point("E", 5, 3);
-		Point F = new Point("F", 3, 3);
+		Point F = new Point("F", Math.PI, Math.E);
+		Point G = new Point("G", 2*Math.PI, 2 * Math.E);
 		Point Zero = new Point("zero", 0, 0);
 		Point One = new Point("one", 1, 1);
 		Point Half = new Point("half", 1.5, 1.5);
@@ -34,32 +35,61 @@ class SegmentTest {
 		Segment diagonalSegment = new Segment(Zero, Two);
 		Segment diagonalSubSegment1 = new Segment(One, Two);
 		Segment diagonalSubSegment2 = new Segment(One, Half);
-		
-		
-		
-		
-		
-		//check segments that overlap one way but not the other
-		//check segments that arent subsegments
+		Segment diagonalSubSegment3 = new Segment(One, new Point(2.5, 3.5));
+		Segment PIESegment = new Segment(F, G);
+		Segment close = new Segment(new Point(1.001, 1.001), new Point(2.001, 2.001));
 		
 		
 		//check identical segments
-		assertFalse(testSegment1.hasSubSegment(identicalSegment1));
-		//check segments with different slopes 
-		
-	
+		assertTrue(testSegment1.hasSubSegment(identicalSegment1));
+		assertTrue(PIESegment.hasSubSegment(PIESegment));
 		//check segments with 1 identical endpoint
 		assertTrue(testSegment1.hasSubSegment(flatSubSegment1));
 		assertTrue(testSegment1.hasSubSegment(flatSubSegment2));
-		//check points that arent collinear
-		assertFalse(testSegment1.hasSubSegment(invalidSubSegment1));
-		
 		//check valid subsegment
-		//TODO failing same slope check
 		assertTrue(diagonalSegment.hasSubSegment(diagonalSubSegment1));
+		//check points that arent collinear/not subsegments
+		assertFalse(testSegment1.hasSubSegment(invalidSubSegment1));
+		assertFalse(diagonalSegment.hasSubSegment(diagonalSubSegment3));
+		assertFalse(diagonalSegment.hasSubSegment(flatSubSegment2));
+		assertFalse(diagonalSegment.hasSubSegment(close));
 	}
 	
-	
+	@Test
+	void coincideWithoutOverlapTest() {
+		Point A = new Point("A", 1.5, 3);
+		Point B = new Point("B", 0.5, 1);
+		Point X = new Point("X", 2, 4);
+		
+		Point C = new Point("C", 5.5, 2);
+		Point D = new Point("D", 5.5, 3);
+		Point E = new Point("E", 5.5, 4);
+		Point F = new Point("F", 5.5, 5);
+		
+		Segment AB = new Segment(A, B);
+		Segment AX = new Segment(A, X);
+		Segment CD = new Segment(C, D);
+		Segment EF = new Segment(E, F);
+		Segment XY = new Segment(new Point(0,0), new Point(1,1));
+		Segment WZ = new Segment(new Point(2,2), new Point(3,3));
+		
+		
+		
+		//check identical lines (share 2 endpoints)
+		assertFalse(AB.coincideWithoutOverlap(AB));
+		//share 1 endpoint
+		//TODO now issue with sharing endpoint
+		assertTrue(AB.coincideWithoutOverlap(AX));
+		
+		
+		//share no endpoints but coincide
+		
+		//assertTrue(CD.coincideWithoutOverlap(EF));
+		assertTrue(XY.coincideWithoutOverlap(WZ));
+		
+		
+		
+	}
 	
 	@Test
 	void collectOrderedPointsOnSegmentTest() {
