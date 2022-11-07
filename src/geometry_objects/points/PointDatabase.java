@@ -93,6 +93,18 @@ public class PointDatabase
 	{
         return _factory.get(pt);
 	}
+	
+	
+	public boolean contains(Point pt)
+	{
+		Set<Point> pointSet = _factory.getAllPoints();
+		for(Point p: pointSet)
+		{
+			if(p.equals(pt)) return true;
+		}
+		return false;
+	}
+	
 
 	/**
 	 * Given a raw point (x, y), acquire the stored database object .
