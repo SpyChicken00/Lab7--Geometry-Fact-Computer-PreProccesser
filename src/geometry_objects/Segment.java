@@ -143,8 +143,6 @@ public class Segment extends GeometricObject
 	{
 		return _point1.hashCode() +_point2.hashCode();
 	}
-
-	
 	
 	/*
 	 * @param that -- a segment
@@ -155,18 +153,13 @@ public class Segment extends GeometricObject
 	 */
 	public boolean coincideWithoutOverlap(Segment that)
 	{
-        // TODO	test
-		//TODO issue with lines being collinear?
-		
-		//if (!(isCollinearWith(that))) return false;
-		if (!(collinearWithGap(that))) return false;
-	
 		//check if identical
 		if (this.equals(that)) return false;
+		//points should have same slope/y-intercept
+		if (!(collinearWithGap(that))) return false;
 		
-		//check if either of that segments endpoints lie between this segments endpoints or endpoints are equal
+		//check if either of that segment's endpoints lie between this segment's endpoints OR if endpoints are equal
 		//if that endpoint lies between this segments endpoints AND is not an endpoint return false;
-		
 		if (GeometryUtilities.between(that.getPoint1(), _point1, _point2) && 
 				(!(that.getPoint1().equals(_point1) || that.getPoint1().equals(_point2)))) return false;
 		if (GeometryUtilities.between(that.getPoint2(), _point1, _point2) &&
@@ -175,11 +168,15 @@ public class Segment extends GeometricObject
 		return true;
 	}
 	
-	//TODO this is a monstrosity
+	/**
+	 * Checks whether two segemtns are collinear, but also factors in whether there is a gap
+	 * of space between the segments or not
+	 * @param that
+	 * @return True if collinear with/without a gap
+	 */
 	private boolean collinearWithGap(Segment that) {
 		//if share endpoint check with dr alvin's collinear method 
-		if (_point1.equals(that._point1) || (_point1.equals(that._point2))
-				|| (_point2.equals(that._point1)) || (_point2.equals(that._point2))) return isCollinearWith(that);
+		if (isSharedVertex(that)) return isCollinearWith(that);
 		
 		//check if coincide with gap of space between segments
 		return MathUtilities.doubleEquals(GeometryUtilities.distance(_point1, that.getPoint2()),
@@ -187,6 +184,16 @@ public class Segment extends GeometricObject
 				GeometryUtilities.distance(that.getPoint1(), that.getPoint2()) +
 				GeometryUtilities.distance(_point2, that.getPoint1()));
 		
+	}
+
+	/**
+	 * Checks whether the current segment and input segment share a vertex
+	 * @param that
+	 * @return True if share a vertex
+	 */
+	private boolean isSharedVertex(Segment that) {
+		return (_point1.equals(that._point1) || (_point1.equals(that._point2))
+				|| (_point2.equals(that._point1)) || (_point2.equals(that._point2)));
 		
 	}
 	
@@ -204,5 +211,11 @@ public class Segment extends GeometricObject
 		}
 
 		return pointsOn;
+	}
+	
+	public String toString() {
+		
+		return _point1.getName() + _point2.getName();
+		
 	}
 }

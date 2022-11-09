@@ -118,7 +118,7 @@ class ImplicitPointPreprocessorTest {
 		{
 			//add lots of implicit square points to database
 			pdb.put(pt.getName(), pt.getX(), pt.getY());
-			//System.out.println(pdb.getPoint(pt));
+			System.out.println(pdb.getPoint(pt));
 		}
 		
 		assertTrue(pdb.contains(new Point(2.0, 3.0)));

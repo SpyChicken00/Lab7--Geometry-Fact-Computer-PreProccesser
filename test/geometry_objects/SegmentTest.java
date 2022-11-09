@@ -69,22 +69,27 @@ class SegmentTest {
 		Segment AB = new Segment(A, B);
 		Segment AX = new Segment(A, X);
 		Segment CD = new Segment(C, D);
+		Segment CF = new Segment(C, F);
 		Segment EF = new Segment(E, F);
 		Segment XY = new Segment(new Point(0,0), new Point(1,1));
 		Segment WZ = new Segment(new Point(2,2), new Point(3,3));
 		
 		
-		
-		//check identical lines (share 2 endpoints)
+		//FAIL//
+		//same segment 
 		assertFalse(AB.coincideWithoutOverlap(AB));
+		//overlaping segment
+		assertFalse(CF.coincideWithoutOverlap(CD));
+		//not coincidng segments
+		assertFalse(CD.coincideWithoutOverlap(AX));
+		
+		
+		
+		//PASS//
 		//share 1 endpoint
-		//TODO now issue with sharing endpoint
 		assertTrue(AB.coincideWithoutOverlap(AX));
-		
-		
-		//share no endpoints but coincide
-		
-		//assertTrue(CD.coincideWithoutOverlap(EF));
+		//share no endpoints
+		assertTrue(CD.coincideWithoutOverlap(EF));
 		assertTrue(XY.coincideWithoutOverlap(WZ));
 		
 		
@@ -117,6 +122,9 @@ class SegmentTest {
 		
 		points.clear();
 		sortedPoints.clear();
+		
+		
+		//TODO 
 		
 		//test with doubles 
 		Point G = new Point("G", 1.3, 7.3);
