@@ -156,7 +156,6 @@ public class Segment extends GeometricObject
 	public boolean coincideWithoutOverlap(Segment that)
 	{
         // TODO	test
-		//check all points collinear
 		//TODO issue with lines being collinear?
 		
 		//if (!(isCollinearWith(that))) return false;
@@ -176,14 +175,19 @@ public class Segment extends GeometricObject
 		return true;
 	}
 	
-	//TODO necessary? 
+	//TODO this is a monstrosity
 	private boolean collinearWithGap(Segment that) {
+		//if share endpoint check with dr alvin's collinear method 
+		if (_point1.equals(that._point1) || (_point1.equals(that._point2))
+				|| (_point2.equals(that._point1)) || (_point2.equals(that._point2))) return isCollinearWith(that);
+		
+		//check if coincide with gap of space between segments
 		return MathUtilities.doubleEquals(GeometryUtilities.distance(_point1, that.getPoint2()),
 				GeometryUtilities.distance(_point1, _point2) + 
 				GeometryUtilities.distance(that.getPoint1(), that.getPoint2()) +
 				GeometryUtilities.distance(_point2, that.getPoint1()));
 		
-		//check for 
+		
 	}
 	
 	/**
