@@ -27,13 +27,10 @@ public class ImplicitPointPreprocessor
 	{
 		Set<Point> implicitPoints = new LinkedHashSet<Point>();
 
-		for(int i = 0; i < givenSegments.size(); i++)
+		for(var current: givenSegments)
 		{
-			for(int j = 0; j < givenSegments.size(); j++)
+			for(var other: givenSegments)
 			{
-				Segment current = givenSegments.get(i);
-				Segment other = givenSegments.get(j);
-				
 				if(!current.equals(other))
 				{
 					Point intersect = current.segmentIntersection(other);

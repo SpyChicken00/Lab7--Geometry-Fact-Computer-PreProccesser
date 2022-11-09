@@ -24,7 +24,8 @@ class PreprocessorTest
 	{
 		FigureNode fig = InputFacade.extractFigure("fully_connected_irregular_polygon.json");
 
-		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation(fig);
+		//changed from fig to file name for testing
+		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation("fully_connected_irregular_polygon.json");
 
 		PointDatabase points = pair.getKey();
 
@@ -66,6 +67,15 @@ class PreprocessorTest
 		// There are 15 implied segments inside the pentagon; see figure above
 		//
 		Set<Segment> iSegments = pp.computeImplicitBaseSegments(iPoints);
+		
+		//added
+		System.out.println("--------------------");
+
+		for(var item: iSegments)
+		{
+		}
+		//
+		
 		assertEquals(15, iSegments.size());
 
 		List<Segment> expectedISegments = new ArrayList<Segment>();
