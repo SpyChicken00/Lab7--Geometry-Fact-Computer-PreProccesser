@@ -31,7 +31,7 @@ public class Preprocessor
 	protected Set<Segment> _implicitSegments;
 
 	// Given all explicit and implicit points, we have a set of
-	// segments that contain no other subsegments; these are minimal ('base') segments
+	// segments that contain no otherSegment subsegments; these are minimal ('base') segments
 	// That is, minimal segments uniquely define the figure.
 	protected Set<Segment> _allMinimalSegments;
 
@@ -88,18 +88,53 @@ public class Preprocessor
 		_nonMinimalSegments.forEach((segment) -> _segmentDatabase.put(segment, segment));
 	}
 	
-	private Set<Segment> computeImplicitBaseSegments(Set<Point> _implicitPoints) {
-		//TODO
-		return null;
+	
+	
+	//TODO: Verify, dead code
+	protected Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) {
+		Set<Segment> result = new LinkedHashSet<Segment>();
+		
+		for(var currentSegment: _givenSegments)
+		{
+			for(var point: implicitPoints)
+			{
+				if(currentSegment.pointLiesOn(point) && !result.contains(currentSegment))
+				{
+					result.add(new Segment(point, currentSegment.getPoint1()));
+					result.add(new Segment(point, currentSegment.getPoint2()));
+				}
+			}
+		}
+		return result;
 	}
 	
-	private Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments, Set<Segment> implicitSegments) {
-		//TODO
-		return null;
+	
+	
+	protected Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments, Set<Segment> implicitSegments) {
+		Set<Segment> result = new LinkedHashSet<Segment>(); 
+		
+		result.addAll(implicitSegments);
+		
+		for(var currentSegment: givenSegments)
+		{
+			for(var point: _pointDatabase.getPoints())
+			{
+				if(!currentSegment.pointLiesOn(point) && !result.contains(currentSegment)) 
+				{
+					result.add(currentSegment);
+				}
+			}
+		}
+		return result; 
 	}
 	
-	private Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) {
-		//TODO
-		return null;
+	protected Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) {
+		Set<Segment> result = new LinkedHashSet<Segment>(); 
+		
+		for(var currentSegment: _givenSegments)
+		{
+			if(!allMinimalSegments.contains(currentSegment)) {result.add(currentSegment);}
+		}
+		return result;
 	}
 }
