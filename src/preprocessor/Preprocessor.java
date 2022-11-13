@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
@@ -89,27 +90,53 @@ public class Preprocessor
 	}
 	
 	
-	
-	//TODO: Verify, dead code
-	protected Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) {
-		Set<Segment> result = new LinkedHashSet<Segment>();
-		
-		for(var currentSegment: _givenSegments)
-		{
-			for(var point: implicitPoints)
-			{
-				if(currentSegment.pointLiesOn(point) && !result.contains(currentSegment))
-				{
-					result.add(new Segment(point, currentSegment.getPoint1()));
-					result.add(new Segment(point, currentSegment.getPoint2()));
+	/**
+	 * Creates new subsegments based on an input set of points that lie on a single segment
+	 * Will not add self pairs or segments that are already contained in implicitBaseSegments
+	 * @param segmentPoints
+	 * @param implicitBaseSegments
+	 */
+	private void createSubSegments(SortedSet<Point> segmentPoints, Set<Segment> implicitBaseSegments) 
+	{
+		//add to implicitSegment set if points are different and segment not already contained
+		for (Point implicitPointA:segmentPoints) {
+			for (Point implicitPointB:segmentPoints) {
+				Segment implicitSegment = new Segment(implicitPointA, implicitPointB);
+				if ((!implicitPointA.equals(implicitPointB)) && (!implicitBaseSegments.contains(implicitSegment))) {
+					implicitBaseSegments.add(implicitSegment);
 				}
 			}
 		}
-		return result;
+	}
+	
+	/**
+	 * Calculates all the implicit base segments based on input implicit points
+	 * @param implicitPoints
+	 * @return a set of implicit base segments
+	 */
+	protected Set<Segment> computeImplicitBaseSegments(Set<Point> implicitPoints) 
+	{
+		Set<Segment> implicitBaseSegments = new LinkedHashSet<Segment>();
+		for(var currentSegment: _givenSegments)
+		{
+			//get all points on the current segment
+			SortedSet<Point> segmentPoints = currentSegment.collectOrderedPointsOnSegment(implicitPoints);
+			//create implicit segments and add to set if valid
+			//NOTE: not sure why but adding 1 end point makes it work, adding 
+			//		none or both end points makes it blow up ;n;
+			segmentPoints.add(currentSegment.getPoint1());
+			//segmentPoints.add(currentSegment.getPoint2());
+			createSubSegments(segmentPoints, implicitBaseSegments);
+		}
+		
+		return implicitBaseSegments;
 	}
 	
 	
-	
+	//TODO expected 20 minimal segments, found 25 (extra somewhere)
+	//already have 15 minimal implicit segments, just need to consider outer segments
+	//Only need to consider segments that DONT intersecct
+	//check if any points lie on those segments (AKA coincide but no overlap?)
 	protected Set<Segment> identifyAllMinimalSegments(Set<Point> implicitPoints, Set<Segment> givenSegments, Set<Segment> implicitSegments) {
 		Set<Segment> result = new LinkedHashSet<Segment>(); 
 		

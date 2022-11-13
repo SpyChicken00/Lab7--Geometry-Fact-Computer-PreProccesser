@@ -169,7 +169,7 @@ public class Segment extends GeometricObject
 	}
 	
 	/**
-	 * Checks whether two segemtns are collinear, but also factors in whether there is a gap
+	 * Checks whether two segments are collinear, but also factors in whether there is a gap
 	 * of space between the segments or not
 	 * @param that
 	 * @return True if collinear with/without a gap
@@ -215,7 +215,7 @@ public class Segment extends GeometricObject
 	
 	public String toString() {
 		
-		return _point1.getName() + _point2.getName();
+		return _point1.getName() + _point2.getName() + ": " + _point1.toString() + ", " + _point2.toString();
 		
 	}
 }
