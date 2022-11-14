@@ -156,6 +156,7 @@ class PreprocessorTest
 
 		for (Segment computedNonMinimalSegment : computedNonMinimalSegments)
 		{
+			System.out.println(computedNonMinimalSegment);
 			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
 		}
 	}
