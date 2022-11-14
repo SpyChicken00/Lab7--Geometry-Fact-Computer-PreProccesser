@@ -218,4 +218,20 @@ public class Segment extends GeometricObject
 		return _point1.getName() + _point2.getName() + ": " + _point1.toString() + ", " + _point2.toString();
 		
 	}
+	
+	/**
+	 * Checks whether this segment is a minimal segment based on an input set of points
+	 * Will only return false if points lie BETWEEN the segments endpoints
+	 * @param points
+	 * @return true if minimal segment (AKA no points lie between endpoints)
+	 */
+	public boolean isMinimalSegment(Set<Point> points) {
+		//loop over all points, if any points lie between then not minimal 
+		for (Point p:points) {
+			if (pointLiesBetweenEndpoints(p)) return false;
+		}
+		
+		return true;
+			
+	}
 }

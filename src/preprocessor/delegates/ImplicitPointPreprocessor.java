@@ -16,11 +16,12 @@ public class ImplicitPointPreprocessor
 	 * points and name them.
 	 * 
 	 * Algorithm:
-	 *    TODO
 	 *    
-	 *    //check all segments and see if they intersect with each other
+	 *    check all segments and see if they intersect with each other
 	 *
-	 *    //if they do check that the points where they overlap exist, 
+	 *    if they do check whether the points where lines intersect 
+	 *    already exist in the pointDatabase
+	 *    
 	 *    if not add them to the list of implicit points
 	 */
 	public static Set<Point> compute(PointDatabase givenPoints, List<Segment> givenSegments)

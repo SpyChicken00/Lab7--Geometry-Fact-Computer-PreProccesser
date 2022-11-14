@@ -96,15 +96,20 @@ public class Preprocessor
 	 * @param segmentPoints
 	 * @param implicitBaseSegments
 	 */
-	private void createSubSegments(SortedSet<Point> segmentPoints, Set<Segment> implicitBaseSegments) 
+	private void createSubSegments(SortedSet<Point> segmentPoints, Set<Segment> implicitBaseSegments, Set<Point> implicitSegmentPoints) 
 	{
-		//add to implicitSegment set if points are different and segment not already contained
-		for (Point implicitPointA:segmentPoints) {
-			for (Point implicitPointB:segmentPoints) {
+		if (segmentPoints.size() == 2) return; //minimal segment already
+		
+		//add to implicitSegment set if points are different and segment is a minimal segment
+		for (Point implicitPointA:segmentPoints) 
+		{
+			for (Point implicitPointB:segmentPoints) 
+			{
 				Segment implicitSegment = new Segment(implicitPointA, implicitPointB);
-				if ((!implicitPointA.equals(implicitPointB)) && (!implicitBaseSegments.contains(implicitSegment))) {
+				if ((!implicitPointA.equals(implicitPointB)) && implicitSegment.isMinimalSegment(implicitSegmentPoints)) 
+				{
 					implicitBaseSegments.add(implicitSegment);
-				}
+				}	
 			}
 		}
 	}
@@ -120,13 +125,12 @@ public class Preprocessor
 		for(var currentSegment: _givenSegments)
 		{
 			//get all points on the current segment
-			SortedSet<Point> segmentPoints = currentSegment.collectOrderedPointsOnSegment(implicitPoints);
-			//create implicit segments and add to set if valid
-			//NOTE: not sure why but adding 1 end point makes it work, adding 
-			//		none or both end points makes it blow up ;n;
+			SortedSet<Point> implicitSegmentPoints = currentSegment.collectOrderedPointsOnSegment(implicitPoints);
+			SortedSet<Point> segmentPoints = implicitSegmentPoints;
 			segmentPoints.add(currentSegment.getPoint1());
-			//segmentPoints.add(currentSegment.getPoint2());
-			createSubSegments(segmentPoints, implicitBaseSegments);
+			segmentPoints.add(currentSegment.getPoint2());
+			//create implicit segments and add to set if valid
+			createSubSegments(segmentPoints, implicitBaseSegments, implicitSegmentPoints);
 		}
 		
 		return implicitBaseSegments;
@@ -152,7 +156,7 @@ public class Preprocessor
 		allPoints.addAll(_pointDatabase.getPoints());
 		allPoints.addAll(implicitPoints);
 
-		//need to verify if if givenSegment is minimal
+		//need to verify if givenSegment is minimal
 		for (Segment currentSegment:givenSegments) {
 			//get all points on the current segment										
 			SortedSet<Point> segmentPoints = currentSegment.collectOrderedPointsOnSegment(allPoints);
@@ -168,22 +172,19 @@ public class Preprocessor
 	}
 	
 	private void createNonMinimalSubSegments(Set<Point> segmentPoints, Set<Segment> nonMinimalSegments, Set<Segment> allMinimalSegments) {
-		//add to implicitSegment set if points are different and segment not already contained TODO edit
+		//add to implicitSegment set if points are different and segment not already contained
 		for (Point PointA:segmentPoints) {
 			for (Point PointB:segmentPoints) {
 				//create new potential nonMinimalSegment
 				Segment newSegment = new Segment(PointA, PointB);
-				if ((!PointA.equals(PointB)) && !allMinimalSegments.contains(newSegment) ) 
+				if ((!PointA.equals(PointB)) && !allMinimalSegments.contains(newSegment)) 
 				{
-					//TODO is adding A*C to nonMinimal (but should be in minimal and be filtered out though)
-					//TODO adding wrong segments? why?
-					System.out.println(newSegment);
 					nonMinimalSegments.add(newSegment);
 				}
 			}
 		}
-		System.out.println("===================");
 	}
+	
 	/**
 	 * Constructs all nonMinimalSegments 
 	 * @param allMinimalSegments
@@ -191,54 +192,18 @@ public class Preprocessor
 	 */
 	protected Set<Segment> constructAllNonMinimalSegments(Set<Segment> allMinimalSegments) {
 		Set<Segment> nonMinimalSegments = new LinkedHashSet<Segment>(); 
-		
-		
-		
 		//construct all possible segments
 		//dont add those which are minimal segments
 		for(var currentSegment: _givenSegments)
 		{
 			//get all points on the current segment
 			SortedSet<Point> segmentPoints = currentSegment.collectOrderedPointsOnSegment(_implicitPoints);
-			//create implicit segments and add to set if valid
-			//NOTE: not sure why but adding 1 end point makes it work, adding 
-			//		none or both end points makes it blow up ;n;
 			segmentPoints.add(currentSegment.getPoint1());
 			segmentPoints.add(currentSegment.getPoint2());
+			//create implicit segments and add to set if valid
 			createNonMinimalSubSegments(segmentPoints, nonMinimalSegments, allMinimalSegments);
 		}
-		
-		System.out.println("Size:" + nonMinimalSegments.size());
 		return nonMinimalSegments;
-		/*
-		//create set of all points
-		Set<Point> allPoints =  new HashSet<Point>();
-		allPoints.addAll(_pointDatabase.getPoints());
-		allPoints.addAll(_implicitPoints);
 		
-		//need to verify if if givenSegment is NOT minimal
-		for (Point pointA:allPoints) {
-			for (Point pointB:allPoints) {
-				Segment currentSegment = new Segment(pointA, pointB);
-				if (!pointA.equals(pointB) && !allMinimalSegments.contains(currentSegment)
-						&& !nonMinimalSegments.contains(currentSegment));
-					//pointA and pointB different
-					//segment not already contained
-					//segment not a minimal segment
-				
-			//need to verify if a valid segment
-					System.out.println(currentSegment);
-					nonMinimalSegments.add(currentSegment);
-			}									
-		}
-		*/
-
-		/*
-		for(Segment currentSegment: _givenSegments)
-		{
-			if(!allMinimalSegments.contains(currentSegment)) {nonMinimalSegments.add(currentSegment);}
-		}
-		return nonMinimalSegments;
-		*/
 	}
 }

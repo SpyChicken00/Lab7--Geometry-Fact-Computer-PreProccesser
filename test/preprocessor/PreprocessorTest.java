@@ -66,6 +66,7 @@ class PreprocessorTest
 		// There are 15 implied segments inside the pentagon; see figure above
 		//
 		Set<Segment> iSegments = pp.computeImplicitBaseSegments(iPoints);
+		//TODO failing
 		assertEquals(15, iSegments.size());
 		
 
@@ -94,7 +95,8 @@ class PreprocessorTest
 
 		for (Segment iSegment : iSegments)
 		{
-			assertTrue(iSegments.contains(iSegment));
+			//TODO failing
+			assertTrue(expectedISegments.contains(iSegment));
 		}
 
 		//
@@ -110,6 +112,9 @@ class PreprocessorTest
 		Set<Segment> minimalSegments = pp.identifyAllMinimalSegments(iPoints, segments, iSegments);
 		assertEquals(expectedMinimalSegments.size(), minimalSegments.size());
 
+		//TODO not contained here, issue with creating minimal segments then?
+		//assertTrue(minimalSegments.contains(new Segment(points.getPoint("C"), a_star)));
+		
 		for (Segment minimalSeg : minimalSegments)
 		{
 			assertTrue(expectedMinimalSegments.contains(minimalSeg));
@@ -153,10 +158,9 @@ class PreprocessorTest
 		// Check size and content equality
 		//
 		assertEquals(expectedNonMinimalSegments.size(), computedNonMinimalSegments.size());
-
+		
 		for (Segment computedNonMinimalSegment : computedNonMinimalSegments)
 		{
-			System.out.println(computedNonMinimalSegment);
 			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
 		}
 	}
