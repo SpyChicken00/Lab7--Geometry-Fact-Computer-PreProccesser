@@ -198,7 +198,7 @@ public class Segment extends GeometricObject
 	}
 	
 	/**
-	 * 
+	 * Returns a set of ordered points that lie on this segment
 	 * @return the set of Points that lie on this segment (ordered lexicographically)
 	 */
 	public SortedSet<Point> collectOrderedPointsOnSegment(Set<Point> points)
@@ -213,6 +213,11 @@ public class Segment extends GeometricObject
 		return pointsOn;
 	}
 	
+	
+	/**
+	 * Returns this segment as a readable string
+	 * @return
+	 */
 	public String toString() {
 		
 		return _point1.getName() + _point2.getName() + ": " + _point1.toString() + ", " + _point2.toString();

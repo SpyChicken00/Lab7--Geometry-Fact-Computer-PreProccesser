@@ -22,8 +22,6 @@ class PreprocessorTest
 	@Test
 	void test_implicit_crossings()
 	{
-		FigureNode fig = InputFacade.extractFigure("fully_connected_irregular_polygon.json");
-
 		//changed from fig to file name for testing
 		Map.Entry<PointDatabase, Set<Segment>> pair = InputFacade.toGeometryRepresentation("fully_connected_irregular_polygon.json");
 
@@ -113,7 +111,7 @@ class PreprocessorTest
 		assertEquals(expectedMinimalSegments.size(), minimalSegments.size());
 
 		//TODO not contained here, issue with creating minimal segments then?
-		//assertTrue(minimalSegments.contains(new Segment(points.getPoint("C"), a_star)));
+		assertTrue(minimalSegments.contains(new Segment(points.getPoint("C"), a_star)));
 		
 		for (Segment minimalSeg : minimalSegments)
 		{

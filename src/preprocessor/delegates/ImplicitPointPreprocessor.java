@@ -24,6 +24,13 @@ public class ImplicitPointPreprocessor
 	 *    
 	 *    if not add them to the list of implicit points
 	 */
+	
+	/**
+	 * Computes the set of implied points 
+	 * @param givenPoints
+	 * @param givenSegments
+	 * @return
+	 */
 	public static Set<Point> compute(PointDatabase givenPoints, List<Segment> givenSegments)
 	{
 		Set<Point> implicitPoints = new LinkedHashSet<Point>();
@@ -34,7 +41,9 @@ public class ImplicitPointPreprocessor
 			{
 				if(!current.equals(other))
 				{
+					//find intersection
 					Point intersect = current.segmentIntersection(other);
+					//if intersect is not in given points, it is an implied point
 					if(intersect != null && !givenPoints.contains(intersect)) implicitPoints.add(intersect);
 				}
 			}

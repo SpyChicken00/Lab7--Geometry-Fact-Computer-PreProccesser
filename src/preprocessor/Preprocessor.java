@@ -171,6 +171,14 @@ public class Preprocessor
 		return minimalSegments;
 	}
 	
+	
+	/**
+	 * Creates all nonMinimalSegments 
+	 * @param segmentPoints
+	 * @param nonMinimalSegments
+	 * @param allMinimalSegments
+	 * @return
+	 */
 	private void createNonMinimalSubSegments(Set<Point> segmentPoints, Set<Segment> nonMinimalSegments, Set<Segment> allMinimalSegments) {
 		//add to implicitSegment set if points are different and segment not already contained
 		for (Point PointA:segmentPoints) {
